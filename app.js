@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
+const bodyParser = require("body-parser");
 let pokemons = require("./mock-pokemon");
 const { success, getUniqueId } = require("./helper.js");
 
@@ -8,7 +9,9 @@ const app = express();
 const port = 3000;
 
 ///////// Middleware morgan
-app.use(favicon(`${__dirname}/favicon.ico`)).use(morgan("dev"));
+app.use(favicon(`${__dirname}/favicon.ico`))
+    .use(morgan("dev"))
+    .use(bodyParser.json());
 
 app.get("/", (req, res) => res.send("Hello, Express 2! 👋"));
 
@@ -28,7 +31,7 @@ app.post("/api/pokemons", (req, res) => {
     const id = getUniqueId(pokemons);
     const pokemonCreated = { ...req.body, ...{ id, createdAt: new Date() } };
     pokemons.push(pokemonCreated);
-    const message = `Le pokemon ${PokemonCreated.name} a bien été créé`;
+    const message = `Le pokemon ${pokemonCreated.name} a bien été créé`;
     res.status(200).json(success(message, pokemonCreated));
 });
 
