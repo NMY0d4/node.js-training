@@ -46,6 +46,16 @@ app.put("/api/pokemons/:id", (req, res) => {
     res.status(200).json(success(message, pokemonUpdated));
 });
 
+app.delete("/api/pokemons/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const pokemonDeleted = pokemons.find((pokemon) => pokemon.id === id);
+    pokemons = pokemons.filter((pokemon) => pokemon.id !== id);
+
+    const message = `Le pokémon ${pokemonDeleted.name} à bien été supprimé.`;
+
+    res.status(200).json(success(message, pokemonDeleted));
+});
+
 app.listen(port, () =>
     console.log(
         `Notre application Node est démarré sur : http://localhost:${port}`
